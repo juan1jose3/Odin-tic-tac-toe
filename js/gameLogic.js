@@ -1,6 +1,17 @@
 
-function player(name, mark){
-  return { name, mark};
+function player(name, mark) {
+  return {
+    name,
+    mark,
+    
+    getPlayerName() {
+      return name;
+    },
+    
+    getPlayerMark() {
+      return mark
+    }
+  };
 }
 
 const gameBoard = (() => {
@@ -13,14 +24,27 @@ const gameBoard = (() => {
     
   };
 
-  const markBoard = (position, playerToken, currentTurn) => {
+  const markBoard = (position, playerMark) => {
     if (board[position].length === 0) {
-      board[position] = playerToken;
-      currentTurn++;
+      board[position] = playerMark;
+      console.log("Valid Spot!");
+      return true;
     }
+    
+    
+
+    console.log("This spot is Filled!");
+    return false;
   }
     
-  const getBoard = () => board;
+  const getBoard = () => {
+    console.log(
+      `
+      ${board[0]} | ${board[1]} | ${board[2]} \n
+      ${board[3]} | ${board[4]} | ${board[5]} \n
+      ${board[6]} | ${board[7]} | ${board[8]} \n
+    `);
+  };
 
   return { crateGrid, getBoard, markBoard };
     
@@ -29,34 +53,66 @@ const gameBoard = (() => {
 
 const gameController = (() => {
   const board = gameBoard;
-  gameBoard.crateGrid();
+  board.crateGrid();
 
-  const player1 = player("Juan", "X");
-  const player2 = player2("BOT", "O");
+  const players = [
+    {
+      player: player("Juan", "X"),
+      turn: 1
+    },
 
-  
-  
+    {
+      player: player("BOT", "O"),
+      turn: 2
+    }
+  ]  
+
   let currentTurn = 1;
-  let playersTurn = "player1"
+  let move;
+  let activePlayer = players[0];
   
 
-  const switchTurn = ((currentTurn) => {
-    if (currentTurn % 2 == 0) {
-      playersTurn = "player1"
-
+  const switchTurn = (() => {
+    if (activePlayer.turn === 1) {
+      activePlayer = players[1];
     } else {
-      playersTurn = "player2" 
+      activePlayer = players[0];
+    }
+    
+  });
+
+  const showTurn = (() => {
+    console.log(`It's ${activePlayer.player.getPlayerName()}'s turn`);
+  });
+  
+  const playRound = (() => {
+    showTurn();
+    console.log(`Turn: ${currentTurn}`);
+    
+    move = board.markBoard(0, activePlayer.player.getPlayerMark());
+
+    if (move) {
+      currentTurn++;
+    }
+    
+    board.getBoard();
+    switchTurn();
+    
+    showTurn();
+  
+    console.log(`Turn: ${currentTurn}`);
+    
+    move = board.markBoard(0, activePlayer.player.getPlayerMark());
+    board.getBoard();
+
+    if (move) {
+      currentTurn++;
     }
   });
 
+    playRound();
 
-  switchTurn(currentTurn);
-
-  
-
-
-  
-  console.log(board.getBoard())
+  //console.log(board.getBoard())
  
   
   
