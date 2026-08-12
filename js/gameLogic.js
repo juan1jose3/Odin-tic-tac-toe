@@ -17,7 +17,7 @@ function player(name, mark) {
 const gameBoard = (() => {
   let board = [];
   
-  const crateGrid = () => {
+  const createGrid = () => {
     for (let i = 0; i < 9; i++) {
       board.push("");
     }
@@ -49,14 +49,14 @@ const gameBoard = (() => {
     `);
   };
 
-  return { crateGrid, showBoard, markBoard, getBoard };
+  return { createGrid, showBoard, markBoard, getBoard };
     
 })();
 
 
 const gameController = (() => {
   const board = gameBoard;
-  board.crateGrid();
+  board.createGrid();
 
   const players = [
     {
@@ -112,22 +112,43 @@ const gameController = (() => {
     
   
   const playRound = () => {
-    showTurn();
-    console.log(`Turn: ${currentTurn}`);
-    
-    move = board.markBoard(2, activePlayer.player.getPlayerMark());
+    const player1 = [0, 3, 6];
+    const player2 = [1, 2, 5];
+    let p1Index = 0
+    let p2Index = 0
+    while (currentTurn < 9) {
+      showTurn();
+      console.log(`Turn: ${currentTurn}`);
+      let position;
+      
+      if (activePlayer.player.getPlayerName() === "Juan") {
+        position = player1[p1Index];
+        p1Index++;
+      } else {
+        position = player2[p2Index];
+        p2Index ++
+      }
+      
+      move = board.markBoard(position, activePlayer.player.getPlayerMark());
+  
+      if (move) {
+        board.showBoard();
+        if (isWinner()) {
+          console.log(`Is winner: ${activePlayer.player.getPlayerName()}`);
+          break;
+        }
+        switchTurn();
+        currentTurn++;
+      }
 
-    move = board.markBoard(4, activePlayer.player.getPlayerMark());
-    
-    move = board.markBoard(6, activePlayer.player.getPlayerMark());
-
-    console.log(`Is winner?: ${isWinner()}`)
-
-    
-    if (move) {
-      currentTurn++;
+      if (currentTurn === 9 && !isWinner()) {
+        console.log("TIE");
+        break;
+      }
+  
     }
-    
+
+    console.log("GAME OVER");
   };
 
     playRound();
@@ -138,7 +159,7 @@ const gameController = (() => {
   
 })();
 
-controller = gameController;
+const controller = gameController;
 
 
 
