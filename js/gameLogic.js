@@ -112,10 +112,10 @@ const gameController = (() => {
     
   
   const playRound = () => {
-    const player1 = [0, 3, 6];
-    const player2 = [1, 2, 5];
-    let p1Index = 0
-    let p2Index = 0
+    const player1 = [0, 1, 5, 6, 7]; 
+    const player2 = [2, 3, 4, 8];
+    let p1Index = 0;
+    let p2Index = 0;
     while (currentTurn < 9) {
       showTurn();
       console.log(`Turn: ${currentTurn}`);
