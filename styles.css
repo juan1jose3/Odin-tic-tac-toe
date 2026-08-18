@@ -72,7 +72,7 @@ body{
     border-top: 2px solid var(--gridBorder);
     align-items: center;
     justify-content: center;
-    
+    font-size: var(--step-5);
 }
 .cell:nth-child(-n+3){
     border-top: none;
@@ -82,8 +82,11 @@ body{
     border-left: none;
 }
 
-.main-container .currentTurn{
+.main-container .turn-counter{
     font-size: var(--step-4);
 }
 
+.main-container .player-turn{
+    font-size: var(--step-3);
+}
 

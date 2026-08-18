@@ -80,6 +80,8 @@ const gameController = (() => {
     
   };
 
+  const getCurrentTurn = () => currentTurn; 
+
   const getActivePlayer = () => activePlayer;
 
   const showTurn = () => {
@@ -111,19 +113,25 @@ const gameController = (() => {
   
   const playRound = (selectedCell) => {
     move = board.markBoard(selectedCell, activePlayer.player.getPlayerMark());
+    
 
     if (move){
       board.showBoard();
-      if(isWinner()){
-        console.log(`Is winner: ${activePlayer.player.getPlayerName()}`);
+      let checkWinner = isWinner();
+
+      if(checkWinner){
+        return `winner: ${activePlayer.player.getPlayerName()}`;
+      }
+
+      if(currentTurn === 9 && !checkWinner){
+        return "TIE!";
       }
       currentTurn++;
       let currentMark = activePlayer.player.getPlayerMark();
       switchTurn();
       return currentMark;
+
     }
-
-
     
   };
 
@@ -135,6 +143,7 @@ const gameController = (() => {
     isWinner,
     showTurn,
     getActivePlayer,
+    getCurrentTurn,
   }
  
   
@@ -146,38 +155,55 @@ const gameController = (() => {
 
 const uiController = ((cell) => {
     let gameGrid = document.querySelector(".game-grid"); 
-    
-    const turn = document.querySelector(".currentTurn");
+    const turnCounter = document.querySelector(".turn-counter");
+    const playerTurn = document.querySelector(".player-turn");
     const game = gameController;
+    let mark;
 
-    const displayTurn = () => {
-      turn.textContent = game.showTurn();
+    const displayPlayerTurn = () => {
+      playerTurn.textContent = game.showTurn();
     }
-
-    
-    displayTurn();
+   
+    const showTurnNumber = () =>{
+      turnCounter.textContent = `Turn: ${game.getCurrentTurn()}!`
+    }
+    showTurnNumber();
+    displayPlayerTurn();
 
     gameGrid.addEventListener("click", event =>{
       let selectedCell = event.target.id;
-      
-      console.log(selectedCell);
+      let cell = event.target;
+     
+      mark = game.playRound(parseInt(selectedCell));
+  
 
-      let mark = game.playRound(parseInt(selectedCell));
-      event.target.textContent = mark;
-      displayTurn();
+      if (cell.textContent === "" && mark != "TIE!"){
+        event.target.textContent = mark;
+        showTurnNumber();
+        displayPlayerTurn();
+      }
+
+  
+      
+      if (mark === "TIE!") {
+        console.log(mark);
+        turnCounter.textContent = "";
+        playerTurn.textContent = mark;
+      }
+      
       
       
     });
     
 
-  return {displayTurn};
+  return {showTurnNumber, displayPlayerTurn};
 })();
 
 
 
 
 const controller = uiController;
-controller.displayTurn();
+
 
 
 
