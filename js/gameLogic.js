@@ -1,8 +1,5 @@
 function player(name, mark) {
-  return {
-    name,
-    mark,
-    
+  return {  
     getPlayerName() {
       return name;
     },
@@ -41,7 +38,6 @@ const gameBoard = (() => {
   const showBoard = () => {
     console.log(
       `
-      
       ${board[0]} | ${board[1]} | ${board[2]} \n
       ${board[3]} | ${board[4]} | ${board[5]} \n
       ${board[6]} | ${board[7]} | ${board[8]} \n
@@ -85,7 +81,7 @@ const gameController = (() => {
   };
 
   const showTurn = () => {
-    console.log(`It's ${activePlayer.player.getPlayerName()}'s turn`);
+    return (`It's ${activePlayer.player.getPlayerName()}'s turn!`);
   };
 
   const winningOptions = [
@@ -154,12 +150,47 @@ const gameController = (() => {
     playRound();
 
   //console.log(board.getBoard())
+
+  return{
+    switchTurn,
+    playRound,
+    isWinner,
+    showTurn,
+  }
  
   
   
 })();
 
-const controller = gameController;
+
+const uiController = (() => {
+  
+    const turn = document.querySelector(".currentTurn");
+    const game = gameController;
+    const displayTurn = () =>{
+      turn.textContent = game.showTurn();
+    }
+  return {displayTurn};
+})();
+
+
+
+
+//const controller = uiController;
+//controller.displayTurn();
+
+
+const uiListener = (() => {
+    let gameGrid = document.querySelector(".game-grid"); 
+    
+    gameGrid.addEventListener("click", event =>{
+      let cell = event.target;
+      cell.textContent = "x";
+    });
+
+})();
+
+const ui = uiListener;
 
 
 

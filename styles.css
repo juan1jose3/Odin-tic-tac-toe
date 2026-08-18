@@ -7,7 +7,19 @@
     font-display: swap;
 }
 
+
+/* @link https://utopia.fyi/type/calculator?c=320,16,1.125,1440,18,1.25,5,3,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root{
+    --step--3: clamp(0.576rem, 0.7384rem + -0.1805vw, 0.7023rem);
+    --step--2: clamp(0.72rem, 0.8102rem + -0.1002vw, 0.7901rem);
+    --step--1: clamp(0.8889rem, 0.8857rem + 0.0159vw, 0.9rem);
+    --step-0: clamp(1rem, 0.9643rem + 0.1786vw, 1.125rem);
+    --step-1: clamp(1.125rem, 1.0446rem + 0.4018vw, 1.4063rem);
+    --step-2: clamp(1.2656rem, 1.125rem + 0.7031vw, 1.7578rem);
+    --step-3: clamp(1.4238rem, 1.2028rem + 1.1049vw, 2.1973rem);
+    --step-4: clamp(1.6018rem, 1.2747rem + 1.6354vw, 2.7466rem);
+    --step-5: clamp(1.802rem, 1.336rem + 2.3303vw, 3.4332rem);
+
     --background:#2f2f2f;
     --gridColor: #BBDFC5;
     --gridBorder: #3D5A45;
@@ -28,11 +40,14 @@ body{
 .title{
     text-align: center;
     padding-top: 2.5rem;
+    font-size: var(--step-5);
 }
 
 .main-container{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .main-container .game-grid{
@@ -48,6 +63,7 @@ body{
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     color: #2B2D2F;
+    margin-bottom: 2.5rem;
 }
 
 .cell{
@@ -64,6 +80,10 @@ body{
 
 .cell:nth-child(3n+1){
     border-left: none;
+}
+
+.main-container .currentTurn{
+    font-size: var(--step-4);
 }
 
 
