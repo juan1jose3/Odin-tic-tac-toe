@@ -90,3 +90,7 @@ body{
     font-size: var(--step-3);
 }
 
+.play-again-button{
+    display: none;
+}
+

@@ -33,9 +33,9 @@ const gameBoard = (() => {
   }
 
   const getBoard = () => {
-    return board;
+    return [...board];
   }
-  const showBoard = () => {
+  const printBoard = () => {
     console.log(
       `
       ${board[0]} | ${board[1]} | ${board[2]} \n
@@ -45,7 +45,7 @@ const gameBoard = (() => {
     `);
   };
 
-  return { createGrid, showBoard, markBoard, getBoard };
+  return { createGrid, printBoard, markBoard, getBoard };
     
 })();
 
@@ -56,23 +56,20 @@ const gameController = (() => {
 
   const players = [
     {
-      player: player("Juan", "X"),
-      turn: 1
+      player: player("Juan", "X")
     },
 
     {
-      player: player("BOT", "O"),
-      turn: 2
+      player: player("BOT", "O")
     }
   ]  
 
-  let currentTurn = 1;
-  let move;
+  let turnNumber = 1;
   let activePlayer = players[0];
   
 
   const switchTurn = () => {
-    if (activePlayer.turn === 1) {
+    if (activePlayer === players[0]) {
       activePlayer = players[1];
     } else {
       activePlayer = players[0];
@@ -80,9 +77,9 @@ const gameController = (() => {
     
   };
 
-  const getCurrentTurn = () => currentTurn; 
-
+  const getCurrentTurn = () => turnNumber; 
   const getActivePlayer = () => activePlayer;
+  
 
   const showTurn = () => {
     return (`It's ${activePlayer.player.getPlayerName()}'s turn!`);
@@ -109,33 +106,15 @@ const gameController = (() => {
     return winningOptions.some((winnOption => currentBoard[winnOption[0]] && currentBoard[winnOption[0]] === currentBoard[winnOption[1]] && currentBoard[winnOption[1]] === currentBoard[winnOption[2]]));
   };
 
-    
-  
   const playRound = (selectedCell) => {
-    move = board.markBoard(selectedCell, activePlayer.player.getPlayerMark());
-    
-
+    console.log(selectedCell);
+    let move = board.markBoard(selectedCell, activePlayer.player.getPlayerMark());
     if (move){
-      board.showBoard();
-      let checkWinner = isWinner();
-
-      if(checkWinner){
-        return `winner: ${activePlayer.player.getPlayerName()}`;
-      }
-
-      if(currentTurn === 9 && !checkWinner){
-        return "TIE!";
-      }
-      currentTurn++;
-      let currentMark = activePlayer.player.getPlayerMark();
-      switchTurn();
-      return currentMark;
-
-    }
-    
+      turnNumber ++;
+      return true;
+    } 
+    return false;    
   };
-
-  //console.log(board.getBoard())
 
   return{
     switchTurn,
@@ -145,58 +124,64 @@ const gameController = (() => {
     getActivePlayer,
     getCurrentTurn,
   }
- 
-  
-  
 })();
 
 
 
 
-const uiController = ((cell) => {
+const uiController = (() => {
     let gameGrid = document.querySelector(".game-grid"); 
     const turnCounter = document.querySelector(".turn-counter");
     const playerTurn = document.querySelector(".player-turn");
+    const playAgainButton = document.querySelector(".play-again-button");
     const game = gameController;
-    let mark;
+    let gameOver = false;
+    let round;
 
-    const displayPlayerTurn = () => {
+   
+    const showGameStatus = () =>{      
+      turnCounter.textContent = `Turn: ${game.getCurrentTurn()}!`
       playerTurn.textContent = game.showTurn();
     }
-   
-    const showTurnNumber = () =>{
-      turnCounter.textContent = `Turn: ${game.getCurrentTurn()}!`
+
+    const showGameOverState = () =>{
+      turnCounter.textContent = `${game.getActivePlayer().player.getPlayerName()} WINS!`;
+      playerTurn.textContent = "GAME OVER!";
     }
-    showTurnNumber();
-    displayPlayerTurn();
 
+    showGameStatus();
     gameGrid.addEventListener("click", event =>{
-      let selectedCell = event.target.id;
-      let cell = event.target;
-     
-      mark = game.playRound(parseInt(selectedCell));
-  
+      if (!gameOver){
+        let selectedCell = event.target.closest(".cell");
+       
+        round = game.playRound(parseInt(selectedCell.id));
+        
+        if(round){
+          selectedCell.textContent = game.getActivePlayer().player.getPlayerMark();
+          //game.getBoard();
+          const findWinner = game.isWinner();
+          
+          if(findWinner){
+            gameOver = true;
+            showGameOverState();
+          }else{
+            game.switchTurn();
+            showGameStatus();
+          }
+          
+        }
 
-      if (cell.textContent === "" && mark != "TIE!"){
-        event.target.textContent = mark;
-        showTurnNumber();
-        displayPlayerTurn();
+        if(game.getCurrentTurn() === 10 && !gameOver){
+          gameOver = true;
+          turnCounter.textContent = "TIE!";
+          playerTurn.textContent = "GAME OVER!";
+          return;
+        }
       }
-
-  
-      
-      if (mark === "TIE!") {
-        console.log(mark);
-        turnCounter.textContent = "";
-        playerTurn.textContent = mark;
-      }
-      
-      
-      
     });
     
 
-  return {showTurnNumber, displayPlayerTurn};
+  return {showGameStatus,showGameOverState};
 })();
 
 
