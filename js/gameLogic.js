@@ -200,7 +200,6 @@ const uiController = (() => {
         if(gameOver){
 
           gameOver = false;
-          game.switchTurn();
           gameController.resetGame();
           const cells = document.querySelectorAll(".cell");
           cells.forEach((cell) => {
@@ -210,9 +209,6 @@ const uiController = (() => {
           showGameStatus();
         }
     });
-
-
-    
 
   return {showGameStatus,showGameOverState};
 })();

@@ -9,22 +9,44 @@
 <body>
 
     <div class="main-container">
-        <h1 class="title">Tic Tac Toe</h1>
-        <div class="game-grid">
-            <div class="cell" id="0"></div>
-            <div class="cell" id="1"></div>
-            <div class="cell" id="2"></div>
-            <div class="cell" id="3"></div>
-            <div class="cell" id="4"></div>
-            <div class="cell" id="5"></div>
-            <div class="cell" id="6"></div>
-            <div class="cell" id="7"></div>
-            <div class="cell" id="8"></div>
+        <div class="player-profile">
+            <div>Player 1</div>
+            <div class="player-info">
+                <label for="player-name">Name:</label>
+                <input type="text" id="player-name" name="playerName">
+            </div>
+            <div class="player-icon" id="icon-x">X</div>
+
         </div>
-        
-        <div class="turn-counter"></div>
-        <div class="player-turn"></div>
-        <button class="play-again-button" id="hidden-button">Play Again!</button>
+        <div class="game-container">
+            <h1 class="title">Tic Tac Toe</h1>
+            <div class="game-grid">
+                <div class="cell" id="0"></div>
+                <div class="cell" id="1"></div>
+                <div class="cell" id="2"></div>
+                <div class="cell" id="3"></div>
+                <div class="cell" id="4"></div>
+                <div class="cell" id="5"></div>
+                <div class="cell" id="6"></div>
+                <div class="cell" id="7"></div>
+                <div class="cell" id="8"></div>
+            </div>
+            
+            <div class="turn-counter"></div>
+            <div class="player-turn"></div>
+            <button class="play-again-button" id="hidden-button">Play Again!</button>
+
+        </div>
+        <div class="player-profile">
+            <div>Player2</div>
+            <div class="player-info">
+                <label for="player-name">Name:</label>
+                <input type="text" id="player-name" name="playerName">
+            </div>
+
+            <div class="player-icon" id="icon-o">O</div>
+        </div>
+
     </div>
     
     <script src="js/gameLogic.js" defer></script> 

@@ -24,6 +24,9 @@
     --gridColor: #BBDFC5;
     --gridBorder: #3D5A45;
     --resetColor: #488286;
+    --focus:#CBE8D3;
+    --x:#A8C7FA;
+    --o:#9DB4C0;
 }
 
 *{
@@ -46,9 +49,51 @@ body{
 
 .main-container{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+.player-profile > div{
+    text-align: center;
+    font-size: var(--step-2);
+    padding-bottom: 1rem;
+}
+
+.player-profile input{
+    border: var(--gridColor);
+    background-color: var(--gridColor);
+    border-radius: 8px;
+    height: 30px;
+    width: 65%;
+    outline: none;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.player-profile input:focus{
+    box-shadow: 0 0 10px rgba(187, 223, 197, 0.5);
+    background-color: var(--focus);
+}
+
+.player-profile input:hover{
+    background-color: var(--focus);
+}
+
+.player-profile .player-icon{
+    padding-top: 2rem;
+    font-weight: bolder;
+    font-size: var(--step-5);
+}
+
+#icon-x{
+    color: var(--x);
+}
+
+#icon-o{
+    color: var(--o);
+}
+
+.game-container{
+    text-align: center;
 }
 
 .main-container .game-grid{
@@ -74,6 +119,7 @@ body{
     align-items: center;
     justify-content: center;
     font-size: var(--step-5);
+    cursor: pointer;
 }
 .cell:nth-child(-n+3){
     border-top: none;
@@ -83,11 +129,11 @@ body{
     border-left: none;
 }
 
-.main-container .turn-counter{
+.turn-counter{
     font-size: var(--step-4);
 }
 
-.main-container .player-turn{
+.player-turn{
     font-size: var(--step-3);
 }
 
