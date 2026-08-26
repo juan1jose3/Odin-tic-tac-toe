@@ -31,10 +31,15 @@ const gameBoard = (() => {
     console.log("This spot is Filled!");
     return false;
   }
+  
+  const wipeMarkers = () =>{
+    board.length = 0;
+  }
 
   const getBoard = () => {
     return [...board];
   }
+
   const printBoard = () => {
     console.log(
       `
@@ -45,7 +50,7 @@ const gameBoard = (() => {
     `);
   };
 
-  return { createGrid, printBoard, markBoard, getBoard };
+  return { createGrid, printBoard, markBoard, getBoard, wipeMarkers };
     
 })();
 
@@ -77,6 +82,7 @@ const gameController = (() => {
     
   };
 
+
   const getCurrentTurn = () => turnNumber; 
   const getActivePlayer = () => activePlayer;
   
@@ -106,6 +112,12 @@ const gameController = (() => {
     return winningOptions.some((winnOption => currentBoard[winnOption[0]] && currentBoard[winnOption[0]] === currentBoard[winnOption[1]] && currentBoard[winnOption[1]] === currentBoard[winnOption[2]]));
   };
 
+  const resetGame = () => {
+      board.wipeMarkers();
+      board.createGrid();
+      turnNumber = 1;
+  };
+
   const playRound = (selectedCell) => {
     console.log(selectedCell);
     let move = board.markBoard(selectedCell, activePlayer.player.getPlayerMark());
@@ -123,6 +135,7 @@ const gameController = (() => {
     showTurn,
     getActivePlayer,
     getCurrentTurn,
+    resetGame
   }
 })();
 
@@ -164,6 +177,7 @@ const uiController = (() => {
           if(findWinner){
             gameOver = true;
             showGameOverState();
+            playAgainButton.removeAttribute("id");
           }else{
             game.switchTurn();
             showGameStatus();
@@ -175,10 +189,29 @@ const uiController = (() => {
           gameOver = true;
           turnCounter.textContent = "TIE!";
           playerTurn.textContent = "GAME OVER!";
+          playAgainButton.removeAttribute("id");
+
           return;
         }
       }
     });
+
+    playAgainButton.addEventListener("click", event =>{
+        if(gameOver){
+
+          gameOver = false;
+          game.switchTurn();
+          gameController.resetGame();
+          const cells = document.querySelectorAll(".cell");
+          cells.forEach((cell) => {
+            cell.textContent = "";
+          });
+          playAgainButton.setAttribute("id", "hidden-button");
+          showGameStatus();
+        }
+    });
+
+
     
 
   return {showGameStatus,showGameOverState};

@@ -23,6 +23,7 @@
     --background:#2f2f2f;
     --gridColor: #BBDFC5;
     --gridBorder: #3D5A45;
+    --resetColor: #488286;
 }
 
 *{
@@ -90,7 +91,28 @@ body{
     font-size: var(--step-3);
 }
 
+
 .play-again-button{
+    margin-top: 1.5rem;
+    color: #ffffff;
+    font-size: var(--step-1);
+    border:var(--resetColor) 3px solid;
+    background-color: var(--resetColor);
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 12px;
+    width: 200px;
+    height: 50px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.play-again-button:hover{
+    background-color: transparent;
+}
+
+#hidden-button{
     display: none;
 }
 
