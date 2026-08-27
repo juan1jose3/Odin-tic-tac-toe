@@ -24,7 +24,9 @@
     --gridColor: #BBDFC5;
     --gridBorder: #3D5A45;
     --resetColor: #488286;
+    --startColor: #92828D;
     --focus:#CBE8D3;
+
     --x:#A8C7FA;
     --o:#9DB4C0;
 }
@@ -154,11 +156,31 @@ body{
     cursor: pointer;
 }
 
+.play-now-button{
+    margin-top: 1.5rem;
+    color: #ffffff;
+    font-size: var(--step-1);
+    border: var(--startColor) 3px solid;
+    background-color: var(--startColor);
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 12px;
+    width: 200px;
+    height: 50px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
 .play-again-button:hover{
     background-color: transparent;
 }
 
-#hidden-button{
+.play-now-button:hover{
+    background-color: transparent;
+}
+
+.hidden-button{
     display: none;
 }
 

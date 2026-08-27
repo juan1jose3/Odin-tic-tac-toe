@@ -146,8 +146,11 @@ const uiController = (() => {
     let gameGrid = document.querySelector(".game-grid"); 
     const turnCounter = document.querySelector(".turn-counter");
     const playerTurn = document.querySelector(".player-turn");
+    const buttonArea = document.querySelector(".button-area");
+    const playNowButton = document.querySelector(".play-now-button");
     const playAgainButton = document.querySelector(".play-again-button");
     const game = gameController;
+    let gameStart = false;
     let gameOver = false;
     let round;
 
@@ -164,8 +167,9 @@ const uiController = (() => {
 
     showGameStatus();
     gameGrid.addEventListener("click", event =>{
-      if (!gameOver){
+      if (!gameOver && gameStart){
         let selectedCell = event.target.closest(".cell");
+        if (!selectedCell) return;
        
         round = game.playRound(parseInt(selectedCell.id));
         
@@ -177,37 +181,53 @@ const uiController = (() => {
           if(findWinner){
             gameOver = true;
             showGameOverState();
-            playAgainButton.removeAttribute("id");
+            playAgainButton.classList.remove("hidden-button");
           }else{
             game.switchTurn();
             showGameStatus();
           }
-          
         }
 
         if(game.getCurrentTurn() === 10 && !gameOver){
           gameOver = true;
           turnCounter.textContent = "TIE!";
           playerTurn.textContent = "GAME OVER!";
-          playAgainButton.removeAttribute("id");
-
+          playAgainButton.classList.remove("hidden-button");
           return;
         }
       }
     });
 
-    playAgainButton.addEventListener("click", event =>{
-        if(gameOver){
+    buttonArea.addEventListener("click", event =>{
+        
+      let button = event.target.closest("button");
+      if(!button) return;
 
-          gameOver = false;
-          gameController.resetGame();
-          const cells = document.querySelectorAll(".cell");
-          cells.forEach((cell) => {
-            cell.textContent = "";
-          });
-          playAgainButton.setAttribute("id", "hidden-button");
-          showGameStatus();
+      if(button.classList.contains("play-now-button") && !gameStart){
+        const player1Info = document.querySelector(".player1-info").value;
+        const player2Info = document.querySelector(".player2-info").value;
+
+        if(player1Info.length > 0 && player2Info.length > 0 && player1Info != player2Info){
+          gameStart = true;
+          playNowButton.classList.add("hidden-button");
+
+        }else{
+          alert("not a valid name");
+          return;
         }
+
+        
+      }
+      else if(gameOver && button.classList.contains("play-again-button") && gameStart){
+        gameOver = false;
+        gameController.resetGame();
+        const cells = document.querySelectorAll(".cell");
+        cells.forEach((cell) => {
+          cell.textContent = "";
+        });
+        playAgainButton.classList.add("hidden-button");
+        showGameStatus();
+      }
     });
 
   return {showGameStatus,showGameOverState};
