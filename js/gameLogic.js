@@ -252,6 +252,7 @@ const uiController = (() => {
         showGameStatus();
       }
     });
+    
 
   return {showGameStatus,showGameOverState};
 })();
