@@ -72,6 +72,10 @@ const gameController = (() => {
   let turnNumber = 1;
   let activePlayer = players[0];
   
+  const createPlayers = (player1, player2) =>{
+    players[0].player = player(player1, "X");
+    players[1].player = player(player2, "O");
+  }
 
   const switchTurn = () => {
     if (activePlayer === players[0]) {
@@ -113,13 +117,14 @@ const gameController = (() => {
   };
 
   const resetGame = () => {
+      switchTurn();
       board.wipeMarkers();
       board.createGrid();
       turnNumber = 1;
   };
 
   const playRound = (selectedCell) => {
-    console.log(selectedCell);
+
     let move = board.markBoard(selectedCell, activePlayer.player.getPlayerMark());
     if (move){
       turnNumber ++;
@@ -129,6 +134,7 @@ const gameController = (() => {
   };
 
   return{
+    createPlayers,
     switchTurn,
     playRound,
     isWinner,
@@ -164,8 +170,6 @@ const uiController = (() => {
       turnCounter.textContent = `${game.getActivePlayer().player.getPlayerName()} WINS!`;
       playerTurn.textContent = "GAME OVER!";
     }
-
-    showGameStatus();
     gameGrid.addEventListener("click", event =>{
       if (!gameOver && gameStart){
         let selectedCell = event.target.closest(".cell");
@@ -175,7 +179,9 @@ const uiController = (() => {
         
         if(round){
           selectedCell.textContent = game.getActivePlayer().player.getPlayerMark();
-          //game.getBoard();
+
+          selectedCell.textContent === "X" ? selectedCell.classList.add("icon-x") : selectedCell.classList.add("icon-o");
+        
           const findWinner = game.isWinner();
           
           if(findWinner){
@@ -204,15 +210,29 @@ const uiController = (() => {
       if(!button) return;
 
       if(button.classList.contains("play-now-button") && !gameStart){
-        const player1Info = document.querySelector(".player1-info").value;
-        const player2Info = document.querySelector(".player2-info").value;
+        const player1Info = document.querySelector(".player1-info");
+        const player2Info = document.querySelector(".player2-info");
 
-        if(player1Info.length > 0 && player2Info.length > 0 && player1Info != player2Info){
+        const player1Name = player1Info.value;
+        const player2Name = player2Info.value;
+
+        if(player1Name.length > 0 && player2Name.length > 0 && player1Name != player2Name){
           gameStart = true;
+          gameController.createPlayers(player1Name, player2Name);
+          
           playNowButton.classList.add("hidden-button");
+          const divNameP1 = document.createElement("div");
+          divNameP1.textContent = player1Name;
+
+          const divNameP2 = document.createElement("div");
+          divNameP2.textContent = player2Name;
+
+          player1Info.replaceWith(divNameP1);
+          player2Info.replaceWith(divNameP2);
+          showGameStatus();
 
         }else{
-          alert("not a valid name");
+          alert("Both names are empty or Are the same Type Again");
           return;
         }
 
@@ -223,9 +243,12 @@ const uiController = (() => {
         gameController.resetGame();
         const cells = document.querySelectorAll(".cell");
         cells.forEach((cell) => {
+          cell.classList.contains("icon-x") ? cell.classList.remove("icon-x") : cell.classList.remove("icon-o");
+          
           cell.textContent = "";
         });
         playAgainButton.classList.add("hidden-button");
+
         showGameStatus();
       }
     });

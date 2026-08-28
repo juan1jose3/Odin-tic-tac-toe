@@ -27,7 +27,7 @@
     --startColor: #92828D;
     --focus:#CBE8D3;
 
-    --x:#A8C7FA;
+    --x:#B56576;
     --o:#9DB4C0;
 }
 
@@ -61,12 +61,17 @@ body{
     padding-bottom: 1rem;
 }
 
+.player-info{
+    display: flex;
+    flex-direction: column;
+}
+
 .player-profile input{
     border: var(--gridColor);
     background-color: var(--gridColor);
     border-radius: 8px;
     height: 30px;
-    width: 65%;
+    width: 100%;
     outline: none;
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -86,11 +91,11 @@ body{
     font-size: var(--step-5);
 }
 
-#icon-x{
+.icon-x{
     color: var(--x);
 }
 
-#icon-o{
+.icon-o{
     color: var(--o);
 }
 
